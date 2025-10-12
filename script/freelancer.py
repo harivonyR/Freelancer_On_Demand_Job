@@ -149,9 +149,29 @@ def get_total_result(query: str) -> int:
     
     return int(digits) if digits else 0
 
+def extract_job_list(html: str):
+    soup = BeautifulSoup(html, "html.parser")
+    
+    # Sélecteur CSS : il manquait un point pour indiquer la classe
+    items = soup.select(".JobSearchCard-item")
+    
+    job_lists = []
+    
+    for item in items:
+        job = {
+            # Sélection par attribut data-qtsb-label
+            "title": item.select_one('[data-qtsb-label="link-project-title"]').get_text(strip=True) if item.select_one('[data-qtsb-label="link-project-title"]') else None,
+            
+            # Sélection du paragraphe de description
+            "description": item.select_one("p.JobSearchCard-primary-description").get_text(strip=True) if item.select_one("p.JobSearchCard-primary-description") else None
+        }
+        
+        job_lists.append(job)
+    
+    return job_lists
 
 if __name__ == "__main__" :
-    
+    # BUILD A QUERY
     query = build_freelancer_query(
         keyword="script python",
         fixed=True,
@@ -160,6 +180,10 @@ if __name__ == "__main__" :
         contest=False,
         languages=['en','fr','pt'])       # list like ['en', 'fr']
     
+    # ONE INSTANCE SCRAPING
+    res = website_crawler(query.replace("{page}","1"))
+    jobs = extract_job_list(res)
     
-    result_len =  get_total_result(query.replace("{page}","2"))       # can only get result on page number 2
-    page_len = ceil(result_len / 50)                                  # there is 50 results each page
+    # COUNT RESULT and PAGE NUMBER
+    #result_len =  get_total_result(query.replace("{page}","2"))       # can only get result on page number 2
+    #page_len = ceil(result_len / 50)                                  # there is 50 results each page
