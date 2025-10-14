@@ -180,12 +180,11 @@ def extract_job_list(html: str):
             # payment verified
             "payment_verified" : True if item.select_one('[data-tooltip="This user has verified their Payment method"]') else False,
             
-            # Sélection du paragraphe de description
+            # Get job description
             "description": item.select_one("p.JobSearchCard-primary-description").get_text(strip=True) if item.select_one("p.JobSearchCard-primary-description") else None,
             
-            "job_tag": [tag.get_text(strip=True) for tag in item.select("a.JobSearchCard-primary-tags")] if item.select("a.JobSearchCard-primary-tags") else []
-
-        
+            # Job Tag List
+            "job_tag": [a.get_text() for a in item.select('div.JobSearchCard-primary-tags > a')] if item.select('div.JobSearchCard-primary-tags > a') else []
         }
         
         job_lists.append(job)
@@ -203,8 +202,24 @@ if __name__ == "__main__" :
         languages=['en','fr','pt'])       # list like ['en', 'fr']
     
     # ONE INSTANCE SCRAPING
-    res = website_crawler(query.replace("{page}","1"))
-    jobs = extract_job_list(res)
+    html = website_crawler(query.replace("{page}","1"))
+    """
+    # Test scraping tag
+    soup = BeautifulSoup(html, "html.parser")
+    items = soup.select(".JobSearchCard-item")
+    
+    item = items[0]
+    description = item.select_one("p.JobSearchCard-primary-description").get_text(strip=True)
+    
+    job_details = [a.get_text() for a in item.select('div.JobSearchCard-primary-tags > a')]
+
+    res = []
+    for job in job_details:
+        res.append(job.get_text())
+    """
+    
+    # Extract job detail    
+    jobs = extract_job_list(html)
     
     # COUNT RESULT and PAGE NUMBER
     #result_len =  get_total_result(query.replace("{page}","2"))       # can only get result on page number 2
