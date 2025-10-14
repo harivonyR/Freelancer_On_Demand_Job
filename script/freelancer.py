@@ -159,11 +159,33 @@ def extract_job_list(html: str):
     
     for item in items:
         job = {
-            # Sélection par attribut data-qtsb-label
+            # select job title
             "title": item.select_one('[data-qtsb-label="link-project-title"]').get_text(strip=True) if item.select_one('[data-qtsb-label="link-project-title"]') else None,
             
+            # job link
+            "job_link": item.select_one('a').get('href') if item.select_one('a') else None,
+            
+            # select remaining days
+            "days" : item.select_one("span.JobSearchCard-primary-heading-days").get_text(strip=True) if item.select_one("span.JobSearchCard-primary-heading-days") else None,
+            
+            # price
+            "price" : item.select_one("div.JobSearchCard-secondary-price").get_text(strip=True) if item.select_one("div.JobSearchCard-secondary-price") else None,
+            
+            # average price
+            "average_bid" : True if item.select_one("span.JobSearchCard-secondary-avgBid") else False,
+            
+            # bid
+            "bid" : item.select_one("div.JobSearchCard-secondary-entry").get_text(strip=True) if item.select_one("div.JobSearchCard-secondary-entry") else None,
+            
+            # payment verified
+            "payment_verified" : True if item.select_one('[data-tooltip="This user has verified their Payment method"]') else False,
+            
             # Sélection du paragraphe de description
-            "description": item.select_one("p.JobSearchCard-primary-description").get_text(strip=True) if item.select_one("p.JobSearchCard-primary-description") else None
+            "description": item.select_one("p.JobSearchCard-primary-description").get_text(strip=True) if item.select_one("p.JobSearchCard-primary-description") else None,
+            
+            "job_tag": [tag.get_text(strip=True) for tag in item.select("a.JobSearchCard-primary-tags")] if item.select("a.JobSearchCard-primary-tags") else []
+
+        
         }
         
         job_lists.append(job)
