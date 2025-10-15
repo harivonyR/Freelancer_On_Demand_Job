@@ -203,24 +203,7 @@ if __name__ == "__main__" :
     
     # ONE INSTANCE SCRAPING
     html = website_crawler(query.replace("{page}","1"))
-    """
-    # Test scraping tag
-    soup = BeautifulSoup(html, "html.parser")
-    items = soup.select(".JobSearchCard-item")
-    
-    item = items[0]
-    description = item.select_one("p.JobSearchCard-primary-description").get_text(strip=True)
-    
-    job_details = [a.get_text() for a in item.select('div.JobSearchCard-primary-tags > a')]
-
-    res = []
-    for job in job_details:
-        res.append(job.get_text())
-    """
     
     # Extract job detail    
     jobs = extract_job_list(html)
     
-    # COUNT RESULT and PAGE NUMBER
-    #result_len =  get_total_result(query.replace("{page}","2"))       # can only get result on page number 2
-    #page_len = ceil(result_len / 50)                                  # there is 50 results each page
