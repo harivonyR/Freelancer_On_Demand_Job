@@ -51,7 +51,7 @@ x_api_key = "YOUR API KEY HERE!"
 
 ## RUN THE SCRIPT
 
-Open `main.py` and set search parametter
+Open `main.py` and set search parameters
 
 ```python
 param = {
@@ -62,7 +62,7 @@ param = {
     "languages":['en','fr','pt']}
 ```
 
-Run the main script to start scraping Homestra listings:  
+Run the main script to start Freelancer.com job listings:  
 ```bash
 $ python main.py
 ```
