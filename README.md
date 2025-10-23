@@ -27,8 +27,8 @@ Easily extend for trend analysis, NLP, or machine learning
 
 ### 1. Clone the repository
 ```bash
-git clone https://github.com/harivonyR/Freelancer_On_Demand_Job
-cd Freelancer_On_Demand_Job
+$ git clone https://github.com/harivonyR/Freelancer_On_Demand_Job
+$ cd Freelancer_On_Demand_Job
 ```
 
 ### 2. Install dependecies
