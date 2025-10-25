@@ -34,3 +34,9 @@ for i in range(1, page_len + 1):
     jobs.extend(extract_job_list(res))
     
     print(f"page {i} scraped !")
+    
+
+# Display the first 5 scraped jobs as a sample
+import pandas as pd
+jobs_df = pd.DataFrame(jobs)
+jobs_df.to_excel(f"output/{param['keyword']}.xlsx")
