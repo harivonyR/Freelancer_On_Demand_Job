@@ -74,9 +74,10 @@ def build_freelancer_query(
     contest=False,
     contest_min=None,
     contest_max=None,
-    languages=None,       # list like ['en', 'fr']
-    status=None          # set to "all" to display closed job
+    languages=None,         # list like ['en', 'fr']
+    status=None             # set to "all" to display closed job
 ):
+    
     base_url = "https://www.freelancer.com/jobs/{page}/?"
     params = {}
 

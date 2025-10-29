@@ -18,11 +18,11 @@ param = {
     "languages":['en','fr','pt']}
 
 # Build Query (With Pagination PlaceHolder)
-query = build_freelancer_query(**param)                     # list like ['en', 'fr']
+query = build_freelancer_query(**param)                       # list like ['en', 'fr']
 
 # Get The Page Limit
-result_len =  get_total_result(query.replace("{page}","2")) # can only get a reliable result count on page2
-page_len   =  ceil(result_len / 50)                         # each page contain 50 results
+result_len =  get_total_result(query.replace("{page}","2"))   # can only get a reliable result count on page2
+page_len   =  ceil(result_len / 50)                           # each page contain 50 results
 
 # Loop Over Pages
 jobs = []
@@ -35,8 +35,21 @@ for i in range(1, page_len + 1):
     
     print(f"page {i} scraped !")
     
+"""
+    Exporting Data
+
+"""
 
 # Display the first 5 scraped jobs as a sample
 import pandas as pd
+from datetime import datetime
+
 jobs_df = pd.DataFrame(jobs)
-jobs_df.to_excel(f"output/{param['keyword']}.xlsx")
+now = datetime.now()
+date_str = now.strftime("%d_%m_%y")
+
+# 2. Construct the new file path with the keyword and the date
+# The resulting filename will be like: "output/TechJobs-29_10_25.csv"
+keyword = param['keyword']
+filename = f"output/{keyword}-{date_str}.csv"
+jobs_df.to_csv(filename,sep=",")
